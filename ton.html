@@ -59,19 +59,23 @@
         const connectButton = document.getElementById("connect-button");
         const walletAddressElem = document.getElementById("wallet-address");
 
-        // Create a new TON Connect instance
-        const tonConnect = new TonConnect();
+        // Initialize TonConnect instance
+        const tonConnect = new TonConnect({
+            manifestUrl: 'https://my-dapp-url/tonconnect-manifest.json' // Replace with your own manifest file URL
+        });
 
         connectButton.addEventListener("click", async () => {
             try {
-                // Request the user to connect their wallet
-                await tonConnect.connectWallet();
+                // Open wallet connection modal for TON Keeper
+                const provider = await tonConnect.connectWallet({
+                    universalLink: 'https://tonkeeper.com/ton-connect',  // Tonkeeper universal link for mobile users
+                    bridgeUrl: 'https://bridge.tonapi.io/bridge', // Official Ton Connect bridge
+                });
 
-                // Retrieve the user's wallet address
-                const wallet = tonConnect.getWallet();
-                const walletAddress = wallet.account.address;
-
-                // Display wallet address on the page
+                // Once connected, get wallet address
+                const walletAddress = provider.account.address;
+                
+                // Display the wallet address on the page
                 walletAddressElem.textContent = `Wallet Address: ${walletAddress}`;
             } catch (error) {
                 console.error("Failed to connect wallet:", error);
