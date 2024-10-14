@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect TON Keeper Wallet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .wallet-info {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Connect to TON Keeper</h1>
+        <button id="connect-button">Connect Wallet</button>
+        <div id="wallet-info" class="wallet-info">
+            <p id="wallet-address"></p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ton/2.0.0/ton.js"></script> <!-- Assuming this is the JS SDK URL -->
+    <script>
+        document.getElementById("connect-button").addEventListener("click", async () => {
+            try {
+                // Assuming TON SDK usage, with a method to connect to the TON Keeper
+                const ton = new TonWeb(); // Assuming TonWeb is the SDK object
+
+                // Attempt to connect the wallet
+                const wallet = await ton.connect();  // This will trigger the wallet to open and connect
+
+                // Retrieve wallet address
+                const walletAddress = wallet.address.toString(true, true, true);
+
+                // Display wallet address on the page
+                document.getElementById("wallet-address").textContent = `Wallet Address: ${walletAddress}`;
+            } catch (error) {
+                console.error("Failed to connect wallet:", error);
+                alert("Could not connect to the TON Keeper Wallet.");
+            }
+        });
+    </script>
+</body>
+</html>
