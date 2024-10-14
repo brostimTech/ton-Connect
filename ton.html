@@ -52,21 +52,27 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ton/2.0.0/ton.js"></script> <!-- Assuming this is the JS SDK URL -->
+    <!-- Include TON Connect SDK from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tonconnect/sdk@0.0.35/tonconnect.min.js"></script>
+
     <script>
-        document.getElementById("connect-button").addEventListener("click", async () => {
+        const connectButton = document.getElementById("connect-button");
+        const walletAddressElem = document.getElementById("wallet-address");
+
+        // Create a new TON Connect instance
+        const tonConnect = new TonConnect();
+
+        connectButton.addEventListener("click", async () => {
             try {
-                // Assuming TON SDK usage, with a method to connect to the TON Keeper
-                const ton = new TonWeb(); // Assuming TonWeb is the SDK object
+                // Request the user to connect their wallet
+                await tonConnect.connectWallet();
 
-                // Attempt to connect the wallet
-                const wallet = await ton.connect();  // This will trigger the wallet to open and connect
-
-                // Retrieve wallet address
-                const walletAddress = wallet.address.toString(true, true, true);
+                // Retrieve the user's wallet address
+                const wallet = tonConnect.getWallet();
+                const walletAddress = wallet.account.address;
 
                 // Display wallet address on the page
-                document.getElementById("wallet-address").textContent = `Wallet Address: ${walletAddress}`;
+                walletAddressElem.textContent = `Wallet Address: ${walletAddress}`;
             } catch (error) {
                 console.error("Failed to connect wallet:", error);
                 alert("Could not connect to the TON Keeper Wallet.");
